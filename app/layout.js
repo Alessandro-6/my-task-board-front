@@ -3,7 +3,7 @@ import "./globals.css";
 
 const outfit = Outfit({
   variable: "--font-outfit",
-  weight: ["400", "300", "700"],
+  weight: ["400", "300", "500", "700"],
 });
 
 export const metadata = {

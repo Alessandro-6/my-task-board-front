@@ -21,10 +21,11 @@
   --color-root-200: var(--color-pink);
   --color-root-300: var(--color-yellow);
   --color-root-400: var(--color-orange);
-  --color-grey-50: var(--color-grey);
-  --color-grey-100: var(--color-light-gray);
+  --color-grey-50: var(--color-light-gray);
+  --color-grey-100: var(--color-grey);
   --color-grey-200: var(--color-dark-gray);
   --color-lett-50: var(--color-light-green);
+  --color-lett-100: var(--color-green);
   --color-blue: var(--color-blue);
   --color-red: var(--color-red);
 }
