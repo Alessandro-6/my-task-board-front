@@ -20,7 +20,7 @@ export default function Tasks({ children }) {
             height={20}
           />
         </button>
-        <span className="inline-block font-bold">Add new task</span>
+        <span className="inline-block font-medium">Add new task</span>
       </div>
     </div>
   );

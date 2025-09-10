@@ -1,5 +1,6 @@
 import Header from "./components/Header";
 import Task from "./components/Task";
+import TaskForm from "./components/TaskForm";
 import Tasks from "./components/Tasks";
 
 const tasks = [
@@ -31,7 +32,7 @@ const tasks = [
 
 export default function Home() {
   return (
-    <div className="font-sans mx-auto grid grid-rows-[20px_1fr_20px] items-center min-h-screen max-w-2xl p-8 pb-20 gap-16 sm:p-20">
+    <main className="mx-auto grid grid-rows-[20px_1fr_20px] items-center min-h-screen max-w-2xl p-8 pb-20 gap-16 sm:p-20">
       <Header />
       <Tasks>
         {tasks.map((task, idx) => (
@@ -44,6 +45,6 @@ export default function Home() {
           />
         ))}
       </Tasks>
-    </div>
+    </main>
   );
 }

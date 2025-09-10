@@ -5,7 +5,7 @@ export default function Task({ name, description, status, icon }) {
 
   return (
     <div
-      className={`p-3 active:brightness-95 rounded-xl cursor-pointer flex items-center  transition ${
+      className={`p-3 active:brightness-95 font-medium rounded-xl cursor-pointer flex items-center  transition ${
         status === "won't-do"
           ? "bg-root-200"
           : status === "completed"
@@ -18,7 +18,7 @@ export default function Task({ name, description, status, icon }) {
       <span className={`${baseClass} self-start text-xl mr-5 bg-root-50`}>
         {icon}
       </span>
-      <div className="inline-block mr-auto text-lg font-semibold">
+      <div className="inline-block mr-auto text-lg">
         <span>{name}</span>
         <p className="text-sm font-normal w-3/4">{description}</p>
       </div>
