@@ -1,6 +1,7 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import TaskForm from "./components/TaskForm";
+import StoreProvider from "@/lib/StoreProvider";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -18,8 +19,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${outfit.variable} ${outfit.className} antialiased relative w-screen`}
       >
-        <TaskForm />
-        {children}
+        <StoreProvider>
+          <TaskForm />
+          {children}
+        </StoreProvider>
       </body>
     </html>
   );

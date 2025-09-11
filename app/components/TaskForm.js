@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 function FormComponent({ label, id, children }) {
   return (
@@ -56,16 +57,22 @@ export default function TaskForm() {
       bg: "bg-red",
     },
   ];
+  const board = useSelector((state) => state.board);
   const [active, setActive] = useState(-1);
-  const [selected, setSelected] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [taskName, setTaskName] = useState("");
+  const [taskDesc, setTaskDesc] = useState("");
 
   return (
     <>
       <div className="fixed h-screen brightness-75 opacity-20 bg-slate-950 z-10 w-screen"></div>
-      <form className="font-sans font-medium fixed right-3 rounded-xl p-5 top-1/2 -translate-y-1/2 bg-white h-[97%] w-2xl z-20">
+      <form
+        className="font-sans overflow-scroll font-medium fixed right-3 rounded-xl p-5 top-1/2 -translate-y-1/2 bg-white h-[97%] w-2xl z-20"
+        onSubmit={(e) => e.preventDefault()}
+      >
         <div className="w-full flex mb-3 center justify-between">
           <h3 className="text-xl">Task details</h3>
-          <span className="border border-grey-50 h-9 w-9 rounded-md -translate-y-1 flex items-center justify-center">
+          <span className="border active:brightness-75 transition border-grey-50 h-9 w-9 rounded-md -translate-y-1 flex items-center justify-center">
             <Image
               src="/close_ring_duotone-1.svg"
               alt="times"
@@ -79,6 +86,8 @@ export default function TaskForm() {
             type="text"
             name="name"
             id="name"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
             className={`${baseClass} h-11`}
           />
         </FormComponent>
@@ -87,6 +96,8 @@ export default function TaskForm() {
             type="text"
             name="name"
             id="desc"
+            value={taskDesc}
+            onChange={(e) => setTaskDesc(e.target.value)}
             className={`${baseClass} h-40 pt-2 placeholder:text-grey-200`}
             placeholder="Enter a short description"
           ></textarea>
@@ -111,10 +122,12 @@ export default function TaskForm() {
             {statuses.map((status, idx) => (
               <li
                 className={`${statusClass} ${
-                  selected === status.title ? "border-blue" : "border-grey-50 "
+                  selectedStatus === status.title
+                    ? "border-blue"
+                    : "border-grey-50 "
                 } ${status.start} pr-3 capitalize`}
                 key={idx}
-                onClick={() => setSelected(status.title)}
+                onClick={() => setSelectedStatus(status.title)}
               >
                 <StatusIcon
                   src={status.img}
@@ -126,10 +139,10 @@ export default function TaskForm() {
                 </span>
                 <span
                   className={`h-5 w-5 flex items-center justify-center ${
-                    selected === status.title && "bg-blue rounded-full"
+                    selectedStatus === status.title && "bg-blue rounded-full"
                   }`}
                 >
-                  {selected === status.title && (
+                  {selectedStatus === status.title && (
                     <Image
                       src="/Done_round.svg"
                       alt="checked"
@@ -142,7 +155,7 @@ export default function TaskForm() {
                       e.target.checked && setSelected(status.title);
                     }}
                     type="checkbox"
-                    checked={selected === status.title}
+                    checked={selectedStatus === status.title}
                     className="cursor-pointer hidden"
                   />
                 </span>
@@ -151,11 +164,17 @@ export default function TaskForm() {
           </ul>
         </FormComponent>
         <div className="flex h-[16%] items-end justify-end text-white">
-          <button className="h-8 w-28 mr-4 flex gap-2 items-center justify-center text-sm  rounded-full bg-grey-200">
+          <button
+            type="submit"
+            className="h-8 w-28 mr-4 flex gap-2 items-center transition active:brightness-90 justify-center text-sm  rounded-full bg-grey-200"
+          >
             <span>Delete</span>
             <Image src="/Trash.svg" alt="trash can" width={20} height={20} />
           </button>
-          <button className="h-8 w-28 py-1 text-sm gap-2 px-5 flex items-center justify-center rounded-full bg-blue">
+          <button
+            type="submit"
+            className="h-8 w-28 py-1 text-sm gap-2 flex items-center transition active:brightness-90 justify-center rounded-full bg-blue"
+          >
             <span>Save</span>
             <Image src="/Done_round.svg" alt="checked" width={18} height={18} />
           </button>
