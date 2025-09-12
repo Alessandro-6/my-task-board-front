@@ -1,11 +1,10 @@
 "use client";
-import { setActiveTask } from "@/lib/features/board/boardSlice";
+import { setActiveTask, toggleForm } from "@/lib/features/board/boardSlice";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Task({ name, description, status, icon }) {
   const baseClass = "flex items-center rounded-lg justify-center h-10 w-10";
-  const { task } = useSelector((state) => state.board);
   const dispatch = useDispatch();
 
   return (
@@ -20,7 +19,8 @@ export default function Task({ name, description, status, icon }) {
           : "bg-grey-50"
       } mb-5`}
       onClick={() => {
-        dispatch(setActiveTask);
+        dispatch(setActiveTask({ name, description, status, icon }));
+        dispatch(toggleForm());
       }}
     >
       <span className={`${baseClass} self-start text-xl mr-5 bg-root-50`}>

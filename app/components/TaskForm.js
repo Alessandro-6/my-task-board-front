@@ -1,7 +1,8 @@
 "use client";
 
+import { toggleForm } from "@/lib/features/board/boardSlice";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function FormComponent({ label, id, children }) {
@@ -57,24 +58,39 @@ export default function TaskForm() {
       bg: "bg-red",
     },
   ];
+  const task = useSelector((state) => state.board.activeTask);
   const { formOpen } = useSelector((state) => state.board);
   const [active, setActive] = useState(-1);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [taskName, setTaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setActive(icons.findIndex((icon) => icon === task.icon));
+    setSelectedStatus(task.status || "");
+    setTaskName(task.name || "");
+    setTaskDesc(task.description || "");
+  }, [task.name, task.icon, task.description, task.status, icons]);
 
   if (!formOpen) return;
 
   return (
     <>
-      <div className="fixed h-screen brightness-75 opacity-20 bg-slate-950 z-10 w-screen"></div>
+      <div
+        className="fixed h-screen brightness-75 opacity-20 bg-slate-950 z-10 w-screen"
+        onClick={() => dispatch(toggleForm())}
+      ></div>
       <form
         className="font-sans overflow-scroll font-medium fixed right-3 rounded-xl p-5 top-1/2 -translate-y-1/2 bg-white h-[97%] w-2xl z-20"
         onSubmit={(e) => e.preventDefault()}
       >
         <div className="w-full flex mb-3 center justify-between">
           <h3 className="text-xl">Task details</h3>
-          <span className="border active:brightness-75 transition border-grey-50 h-9 w-9 rounded-md -translate-y-1 flex items-center justify-center">
+          <span
+            className="border active:brightness-75 transition border-grey-50 h-9 w-9 rounded-md -translate-y-1 flex items-center justify-center cursor-pointer"
+            onClick={() => dispatch(toggleForm())}
+          >
             <Image
               src="/close_ring_duotone-1.svg"
               alt="times"
