@@ -57,11 +57,13 @@ export default function TaskForm() {
       bg: "bg-red",
     },
   ];
-  const board = useSelector((state) => state.board);
+  const { formOpen } = useSelector((state) => state.board);
   const [active, setActive] = useState(-1);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [taskName, setTaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
+
+  if (!formOpen) return;
 
   return (
     <>
