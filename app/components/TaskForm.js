@@ -82,7 +82,7 @@ export default function TaskForm() {
         onClick={() => dispatch(toggleForm())}
       ></div>
       <form
-        className="font-sans overflow-scroll font-medium fixed right-3 rounded-xl p-5 top-1/2 -translate-y-1/2 bg-white h-[97%] w-2xl z-20"
+        className="font-sans overflow-scroll font-medium fixed right-0 md:right-3 rounded-xl p-5 top-1/2 -translate-y-1/2 bg-white h-[97%] w-screen md:w-2xl z-20"
         onSubmit={(e) => e.preventDefault()}
       >
         <div className="w-full flex mb-3 center justify-between">
