@@ -1,8 +1,9 @@
 "use client";
 
+import { deleteTask, updateTask } from "@/lib/api/taskApi";
 import { toggleForm } from "@/lib/features/board/boardSlice";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Suspense, use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function FormComponent({ label, id, children }) {
@@ -52,18 +53,20 @@ export default function TaskForm() {
       bg: "bg-lett-100",
     },
     {
-      title: "won't do",
+      title: "won't-do",
       img: "/close_ring_duotone.svg",
       start: "col-start-1",
       bg: "bg-red",
     },
   ];
-  const task = useSelector((state) => state.board.activeTask);
+  const { boardId, activeTask: task } = useSelector((state) => state.board);
   const { formOpen } = useSelector((state) => state.board);
   const [active, setActive] = useState(-1);
   const [selectedStatus, setSelectedStatus] = useState("");
   const [taskName, setTaskName] = useState("");
   const [taskDesc, setTaskDesc] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -71,8 +74,39 @@ export default function TaskForm() {
     setSelectedStatus(task.status || "");
     setTaskName(task.name || "");
     setTaskDesc(task.description || "");
-  }, [task.name, task.icon, task.description, task.status, icons]);
+  }, [task.name, task.icon, task.description, task.status]);
 
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    setIsDeleting(true);
+    try {
+      await deleteTask(task.id);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsDeleting(false);
+      dispatch(toggleForm());
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    setIsUpdating(true);
+    try {
+      await updateTask(task.id, {
+        boardId,
+        name: taskName,
+        description: taskDesc,
+        icon: icons[active],
+        status: selectedStatus,
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsUpdating(false);
+      dispatch(toggleForm());
+    }
+  };
   if (!formOpen) return;
 
   return (
@@ -183,17 +217,20 @@ export default function TaskForm() {
         </FormComponent>
         <div className="flex h-[16%] items-end justify-end text-white">
           <button
-            type="submit"
+            type="button"
             className="h-8 w-28 mr-4 flex gap-2 items-center transition active:brightness-90 justify-center text-sm  rounded-full bg-grey-200"
+            onClick={handleDelete}
           >
-            <span>Delete</span>
+            {isDeleting ? <span>Deleting...</span> : <span>Delete</span>}
             <Image src="/Trash.svg" alt="trash can" width={20} height={20} />
           </button>
+
           <button
-            type="submit"
+            type="button"
             className="h-8 w-28 py-1 text-sm gap-2 flex items-center transition active:brightness-90 justify-center rounded-full bg-blue"
+            onClick={handleUpdate}
           >
-            <span>Save</span>
+            <span>{isUpdating ? "Saving..." : "Save"}</span>
             <Image src="/Done_round.svg" alt="checked" width={18} height={18} />
           </button>
         </div>

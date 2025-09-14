@@ -3,7 +3,7 @@ import { setActiveTask, toggleForm } from "@/lib/features/board/boardSlice";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 
-export default function Task({ name, description, status, icon }) {
+export default function Task({ name, description, status, icon, id }) {
   const baseClass = "flex items-center rounded-lg justify-center h-10 w-10";
   const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ export default function Task({ name, description, status, icon }) {
           : "bg-grey-50"
       } mb-5`}
       onClick={() => {
-        dispatch(setActiveTask({ name, description, status, icon }));
+        dispatch(setActiveTask({ name, description, status, icon, id }));
         dispatch(toggleForm());
       }}
     >

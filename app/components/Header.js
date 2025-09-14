@@ -1,6 +1,9 @@
 import Image from "next/image";
+import { use } from "react";
 
-export default function Header({ board }) {
+export default function Header({ boardPromise }) {
+  const board = use(boardPromise);
+
   return (
     <div>
       <div className="flex gap-2.5 mb-2">
@@ -8,7 +11,9 @@ export default function Header({ board }) {
         <h1 className="text-4xl">{board?.name || "My Task Board"}</h1>
         <Image src="/Edit_duotone.svg" alt="Edit" width={30} height={30} />
       </div>
-      <p className="ml-13 font-medium text-sm">Tasks to keep organised</p>
+      <p className="ml-13 font-medium text-sm">
+        {board?.description || "Tasks to keep organised"}
+      </p>
     </div>
   );
 }
